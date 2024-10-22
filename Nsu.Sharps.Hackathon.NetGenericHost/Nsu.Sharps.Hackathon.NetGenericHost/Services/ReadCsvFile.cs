@@ -3,7 +3,6 @@ using Nsu.Sharps.Hackathon.NetGenericHost.Models;
 
 namespace Nsu.Sharps.Hackathon.NetGenericHost.Services;
 
-
 public class ReadCsvFile : IReader
 {
     public List<Junior> ReadJuniors(string pathToFile)
@@ -11,10 +10,7 @@ public class ReadCsvFile : IReader
         var juniors = new List<Junior>();
         using var reader = new StreamReader(pathToFile);
         var line = reader.ReadLine();
-        if (line == null)
-        {
-            throw new Exception($"File {pathToFile} doesn't exist");
-        }
+        if (line == null) throw new Exception($"File {pathToFile} doesn't exist");
 
         while ((line = reader.ReadLine()) != null)
         {
@@ -33,10 +29,7 @@ public class ReadCsvFile : IReader
         var teamLeads = new List<TeamLead>();
         using var reader = new StreamReader(pathToFile);
         var line = reader.ReadLine();
-        if (line == null)
-        {
-            throw new Exception($"File {pathToFile} doesn't exist");
-        }
+        if (line == null) throw new Exception($"File {pathToFile} doesn't exist");
 
         while ((line = reader.ReadLine()) != null)
         {

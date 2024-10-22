@@ -25,21 +25,17 @@ public class HRDirector
             switch (juniorHarmonyLevel)
             {
                 case > 0 when teamLeadHarmonyLevel > 0:
-                    harmonicLevelMean = 
-                        
+                    harmonicLevelMean =
                         Constants.AmountOfParticipantsInNumerator /
-                                        ((Constants.NumeratorInCountingHarmony / juniorHarmonyLevel) +
-                                         (Constants.NumeratorInCountingHarmony / teamLeadHarmonyLevel));
+                        (Constants.NumeratorInCountingHarmony / juniorHarmonyLevel +
+                         Constants.NumeratorInCountingHarmony / teamLeadHarmonyLevel);
                     break;
                 case > 0:
                     harmonicLevelMean = juniorHarmonyLevel;
                     break;
                 default:
                 {
-                    if (teamLeadHarmonyLevel > 0)
-                    {
-                        harmonicLevelMean = teamLeadHarmonyLevel;
-                    }
+                    if (teamLeadHarmonyLevel > 0) harmonicLevelMean = teamLeadHarmonyLevel;
 
                     break;
                 }

@@ -4,7 +4,7 @@ public class Constants
 {
     public const int AmountOfJuniors = 20;
     public const int AmountOfTeamLeads = 20;
-    
+
     public const int AmountOfHackathons = 1000;
 
     public const double NumeratorInCountingHarmony = 1.0;
@@ -12,5 +12,4 @@ public class Constants
 
     public const string PathForJuniors = "Participants/Juniors20.csv";
     public const string PathForTeamLeads = "Participants/Teamleads20.csv";
-
 }

@@ -2,8 +2,10 @@ namespace Nsu.Sharps.Hackathon.NetGenericHost.Models;
 
 public class TeamLead : Participant
 {
-    public TeamLead(int id, string name) : base(id, name) { }
-    
+    public TeamLead(int id, string name) : base(id, name)
+    {
+    }
+
     public int CalculateHarmonyLevel(int juniorId)
     {
         var index = Wishlist.IndexOf(juniorId);
@@ -11,6 +13,7 @@ public class TeamLead : Participant
         {
             throw new InvalidOperationException($"junior {juniorId} is not in the wishlist of teamlead {Id}");
         }
+
         return Constants.AmountOfTeamLeads - index;
     }
 }

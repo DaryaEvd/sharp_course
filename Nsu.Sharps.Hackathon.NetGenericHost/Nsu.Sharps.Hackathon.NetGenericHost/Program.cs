@@ -1,25 +1,30 @@
-﻿using Nsu.Sharps.Hackathon.NetGenericHost;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Nsu.Sharps.Hackathon.NetGenericHost.Interfaces;
 using Nsu.Sharps.Hackathon.NetGenericHost.Models;
 using Nsu.Sharps.Hackathon.NetGenericHost.Services;
 
 public class Program
 {
-    public static void Main()
+    public static void Main(string[] args)
     {
-        IReader reader = new ReadCsvFile();
+        CreateHostBuilder(args).Build().Run();
+    }
 
-        List<Junior> juniors = reader.ReadJuniors(Constants.PathForJuniors);
-        List<TeamLead> teamLeads = reader.ReadTeamLeads(Constants.PathForTeamLeads);
+    public static IHostBuilder CreateHostBuilder(string[] args)
+    {
+        return Host.CreateDefaultBuilder(args)
+            .ConfigureServices((context, services) =>
+            {
+                services.AddHostedService<HackathonWorker>();
+                services.AddTransient<IReader, ReadCsvFile>();
+                services.AddTransient<Hackathon>();
+                services.AddTransient<WishlistGenerator>();
+                services.AddTransient<HRDirector>();
+                services.AddTransient<HRManager>();
 
-        WishlistGenerator wishlistGenerator = new WishlistGenerator();
-        HRDirector hrDirector = new HRDirector();
-
-        HRManager hrManager = new HRManager(juniors, teamLeads, wishlistGenerator, hrDirector);
-
-        var averageHarmonyLevel = hrManager.RunHackathons(Constants.AmountOfHackathons);
-
-        Console.WriteLine(
-            $"\nAverage harmony level of {Constants.AmountOfHackathons} hackathons is {averageHarmonyLevel}");
+                services.AddSingleton<List<Junior>>(provider => new List<Junior>());
+                services.AddSingleton<List<TeamLead>>(provider => new List<TeamLead>());
+            });
     }
 }

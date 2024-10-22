@@ -14,8 +14,8 @@
         <None Update="Participants\Teamleads20.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0-rc.2.24473.5" />
+
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0-rc.2.24473.5"/>
     </ItemGroup>
 
 </Project>

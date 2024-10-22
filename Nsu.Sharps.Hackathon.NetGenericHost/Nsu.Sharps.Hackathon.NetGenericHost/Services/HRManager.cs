@@ -2,17 +2,19 @@ using Nsu.Sharps.Hackathon.NetGenericHost.Models;
 
 namespace Nsu.Sharps.Hackathon.NetGenericHost.Services;
 
-
 public class HRManager
 {
-    // private IReader _reader;
-    private WishlistGenerator _wishlistGenerator;
-    private HRDirector _hrDirector;
+    private readonly HRDirector _hrDirector;
     private List<Junior> _juniors;
+
     private List<TeamLead> _teamLeads;
 
+    // private IReader _reader;
+    private readonly WishlistGenerator _wishlistGenerator;
+
     // public HRManager(/*IReader reader*/ WishlistGenerator wishlistGenerator, HRDirector hrDirector)
-    public HRManager(List<Junior> juniors, List<TeamLead> teamLeads, WishlistGenerator wishlistGenerator, HRDirector hrDirector)
+    public HRManager(List<Junior> juniors, List<TeamLead> teamLeads, WishlistGenerator wishlistGenerator,
+        HRDirector hrDirector)
 
     {
         // _reader = reader;
@@ -40,18 +42,22 @@ public class HRManager
     public void CheckDataLoaded()
     {
         if (_juniors == null || !_juniors.Any() || _teamLeads == null || !_teamLeads.Any())
-        {
             throw new InvalidOperationException("Data not loaded");
-        }
     }
-    
+
+    public void LoadParticipants(List<Junior> juniors, List<TeamLead> teamLeads)
+    {
+        _juniors = juniors;
+        _teamLeads = teamLeads;
+    }
+
     public double RunHackathons(int numberOfHackathons)
     {
         CheckDataLoaded();
-        
+
         double totalHarmonyLevel = 0;
 
-        for (int i = 1; i <= numberOfHackathons; i++)
+        for (var i = 1; i <= numberOfHackathons; i++)
         {
             var hackathon = new Hackathon(_juniors, _teamLeads, _wishlistGenerator, _hrDirector);
 
