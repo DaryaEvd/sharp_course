@@ -4,7 +4,7 @@ namespace Nsu.Sharps.Hackathon.ConsoleApp.Services;
 
 public class WishlistGenerator
 {
-    private Random _rand;
+    private readonly Random _rand;
 
     public WishlistGenerator()
     {
@@ -13,26 +13,21 @@ public class WishlistGenerator
 
     public void GenerateWishlists(List<Junior> juniors, List<TeamLead> teamLeads)
     {
-        foreach (var junior in juniors)
-        {
-            junior.Wishlist = GetShuffledIds(teamLeads.Select(tl => tl.Id).ToList());
-        }
+        foreach (var junior in juniors) junior.Wishlist = GetShuffledIds(teamLeads.Select(tl => tl.Id).ToList());
 
-        foreach (var teamLead in teamLeads)
-        {
-            teamLead.Wishlist = GetShuffledIds(juniors.Select(j => j.Id).ToList());
-        }
+        foreach (var teamLead in teamLeads) teamLead.Wishlist = GetShuffledIds(juniors.Select(j => j.Id).ToList());
     }
 
     private List<int> GetShuffledIds(List<int> ids)
     {
-        for (int i = ids.Count - 1; i > 0; i--)
+        for (var i = ids.Count - 1; i > 0; i--)
         {
-            int j = _rand.Next(i + 1);
-            int temp = ids[i];
+            var j = _rand.Next(i + 1);
+            var temp = ids[i];
             ids[i] = ids[j];
             ids[j] = temp;
         }
+
         return ids;
     }
 }

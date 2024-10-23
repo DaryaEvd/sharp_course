@@ -4,12 +4,10 @@ namespace Nsu.Sharps.Hackathon.ConsoleApp.Services;
 
 public class Hackathon
 {
-    private List<Junior> _juniors;
-    private List<TeamLead> _teamLeads;
-    private WishlistGenerator _wishlistGenerator;
-    private HRDirector _hrDirector;
-
-    public double HarmonyLevel { get; private set; }
+    private readonly HRDirector _hrDirector;
+    private readonly List<Junior> _juniors;
+    private readonly List<TeamLead> _teamLeads;
+    private readonly WishlistGenerator _wishlistGenerator;
 
     public Hackathon(List<Junior> juniors, List<TeamLead> teamLeads, WishlistGenerator wishlistGenerator,
         HRDirector hrDirector)
@@ -19,6 +17,8 @@ public class Hackathon
         _wishlistGenerator = wishlistGenerator;
         _hrDirector = hrDirector;
     }
+
+    public double HarmonyLevel { get; private set; }
 
     public void RunOneHackathon()
     {
@@ -43,6 +43,7 @@ public class Hackathon
             {
                 FormPair(preferredTeamLeadId, juniorId, pairings, juniorPairings, freeJuniors);
             }
+
             else
             {
                 HandleExistingPair(preferredTeamLeadId, juniorId, pairings, juniorPairings, freeJuniors);
@@ -82,10 +83,7 @@ public class Hackathon
         if (!DoesTeamLeadPreferNewJunior(teamLead, newJuniorId, currentJuniorId))
         {
             var newJunior = _juniors.FirstOrDefault(j => j.Id == newJuniorId);
-            if (newJunior != null)
-            {
-                newJunior.Wishlist.Remove(teamLeadId);
-            }
+            if (newJunior != null) newJunior.Wishlist.Remove(teamLeadId);
         }
 
         pairings[teamLeadId] = newJuniorId;

@@ -10,13 +10,16 @@ public class Program
     {
         IReader reader = new ReadCsvFile();
 
-        List<Junior> juniors = reader.ReadJuniors(Constants.PathForJuniors);
-        List<TeamLead> teamLeads = reader.ReadTeamLeads(Constants.PathForTeamLeads);
+        var participants = reader.ReadFile(Constants.PathForJuniors);
+        var juniors = participants.OfType<Junior>().ToList();
 
-        WishlistGenerator wishlistGenerator = new WishlistGenerator();
-        HRDirector hrDirector = new HRDirector();
+        participants = reader.ReadFile(Constants.PathForTeamLeads);
+        var teamLeads = participants.OfType<TeamLead>().ToList();
 
-        HRManager hrManager = new HRManager(juniors, teamLeads, wishlistGenerator, hrDirector);
+        var wishlistGenerator = new WishlistGenerator();
+        var hrDirector = new HRDirector();
+
+        var hrManager = new HRManager(juniors, teamLeads, wishlistGenerator, hrDirector);
 
         var averageHarmonyLevel = hrManager.RunHackathons(Constants.AmountOfHackathons);
 

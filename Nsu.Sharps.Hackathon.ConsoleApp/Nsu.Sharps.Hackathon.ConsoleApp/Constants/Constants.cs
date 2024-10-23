@@ -4,7 +4,7 @@ public class Constants
 {
     public const int AmountOfJuniors = 20;
     public const int AmountOfTeamLeads = 20;
-    
+
     public const int AmountOfHackathons = 1000;
 
     public const double NumeratorInCountingHarmony = 1.0;
