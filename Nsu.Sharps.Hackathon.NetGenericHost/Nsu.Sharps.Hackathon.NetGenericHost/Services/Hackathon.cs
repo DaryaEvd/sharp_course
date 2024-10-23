@@ -40,9 +40,13 @@ public class Hackathon
             var preferredTeamLeadId = junior.Wishlist.First();
 
             if (!IsTeamLeadPaired(preferredTeamLeadId, pairings))
+            {
                 FormPair(preferredTeamLeadId, juniorId, pairings, juniorPairings, freeJuniors);
+            }
             else
+            {
                 HandleExistingPair(preferredTeamLeadId, juniorId, pairings, juniorPairings, freeJuniors);
+            }
         }
 
         return juniorPairings;

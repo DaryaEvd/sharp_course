@@ -8,12 +8,6 @@ public class Junior : Participant
 
     public int CalculateHarmonyLevel(int teamLeadId)
     {
-        var index = Wishlist.IndexOf(teamLeadId);
-        if (index < 0)
-        {
-            throw new InvalidOperationException($"teamlead {teamLeadId} is not in the wishlist of jun {Id}");
-        }
-
-        return Constants.AmountOfJuniors - index;
+        return CalculateHarmonyLevel(teamLeadId, Constants.AmountOfJuniors);
     }
 }

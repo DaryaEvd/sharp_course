@@ -9,7 +9,18 @@ public abstract class Participant
         Wishlist = new List<int>();
     }
 
-    public int Id { get; private set; }
-    public string Name { get; private set; }
+    public int Id { get; }
+    public string Name { get; }
     public List<int> Wishlist { get; set; }
+
+    public int CalculateHarmonyLevel(int targetId, int totalParticipants)
+    {
+        var index = Wishlist.IndexOf(targetId);
+        if (index < 0)
+        {
+            throw new InvalidOperationException($"{targetId} is not in the wishlist of {Name} (Id: {Id})");
+        }
+
+        return totalParticipants - index;
+    }
 }

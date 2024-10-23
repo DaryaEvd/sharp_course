@@ -22,24 +22,10 @@ public class HRDirector
             var teamLeadHarmonyLevel = teamLead.CalculateHarmonyLevel(juniorId);
 
             double harmonicLevelMean = 0;
-            switch (juniorHarmonyLevel)
-            {
-                case > 0 when teamLeadHarmonyLevel > 0:
-                    harmonicLevelMean =
-                        Constants.AmountOfParticipantsInNumerator /
-                        (Constants.NumeratorInCountingHarmony / juniorHarmonyLevel +
-                         Constants.NumeratorInCountingHarmony / teamLeadHarmonyLevel);
-                    break;
-                case > 0:
-                    harmonicLevelMean = juniorHarmonyLevel;
-                    break;
-                default:
-                {
-                    if (teamLeadHarmonyLevel > 0) harmonicLevelMean = teamLeadHarmonyLevel;
 
-                    break;
-                }
-            }
+            harmonicLevelMean = Constants.AmountOfParticipantsInNumerator /
+                                (Constants.NumeratorInCountingHarmony / juniorHarmonyLevel +
+                                 Constants.NumeratorInCountingHarmony / teamLeadHarmonyLevel);
 
             totalHarmonyLevel += harmonicLevelMean;
         }

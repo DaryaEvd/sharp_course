@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NuU4QojQm7Q=",
+  "dgSpecHash": "0oABZIT5Wck=",
   "success": true,
-  "projectFilePath": "/home/darya/RiderProjects/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost.csproj",
+  "projectFilePath": "/home/darya/sharp_course/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost.csproj",
   "expectedPackageFiles": [
     "/home/darya/.nuget/packages/microsoft.extensions.configuration/9.0.0-rc.2.24473.5/microsoft.extensions.configuration.9.0.0-rc.2.24473.5.nupkg.sha512",
     "/home/darya/.nuget/packages/microsoft.extensions.configuration.abstractions/9.0.0-rc.2.24473.5/microsoft.extensions.configuration.abstractions.9.0.0-rc.2.24473.5.nupkg.sha512",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/darya/RiderProjects/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost.csproj": {}
+    "/home/darya/sharp_course/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost.csproj": {}
   },
   "projects": {
-    "/home/darya/RiderProjects/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost.csproj": {
+    "/home/darya/sharp_course/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/darya/RiderProjects/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost.csproj",
+        "projectUniqueName": "/home/darya/sharp_course/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost.csproj",
         "projectName": "Nsu.Sharps.Hackathon.NetGenericHost",
-        "projectPath": "/home/darya/RiderProjects/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost.csproj",
+        "projectPath": "/home/darya/sharp_course/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost.csproj",
         "packagesPath": "/home/darya/.nuget/packages/",
-        "outputPath": "/home/darya/RiderProjects/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost/obj/",
+        "outputPath": "/home/darya/sharp_course/Nsu.Sharps.Hackathon.NetGenericHost/Nsu.Sharps.Hackathon.NetGenericHost/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/darya/.nuget/NuGet/NuGet.Config"
