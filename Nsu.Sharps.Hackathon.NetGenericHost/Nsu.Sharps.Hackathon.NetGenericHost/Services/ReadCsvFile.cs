@@ -21,8 +21,13 @@ public class ReadCsvFile : IReader
             if (!int.TryParse(columns[0], out var id)) continue;
             var name = columns[1];
             if (fileName.StartsWith("junior"))
+            {
                 participants.Add(new Junior(id, name));
-            else if (fileName.StartsWith("teamlead")) participants.Add(new TeamLead(id, name));
+            }
+            else if (fileName.StartsWith("teamlead"))
+            {
+                participants.Add(new TeamLead(id, name));
+            }
         }
 
         return participants;

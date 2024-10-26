@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Nsu.Sharps.Hackathon.NetGenericHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b854f863450a287263284401eeb877dc6d9222ed")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e4d2410baba9c2d0e2701da551a12dfdce1e8ed5")]
 [assembly: System.Reflection.AssemblyProductAttribute("Nsu.Sharps.Hackathon.NetGenericHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Nsu.Sharps.Hackathon.NetGenericHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
