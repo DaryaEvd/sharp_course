@@ -24,8 +24,8 @@ public class HRDirector
             double harmonicLevelMean = 0;
 
             harmonicLevelMean = Constants.AmountOfParticipantsInNumerator /
-                                    (Constants.NumeratorInCountingHarmony / juniorHarmonyLevel +
-                                     Constants.NumeratorInCountingHarmony / teamLeadHarmonyLevel);
+                                (Constants.NumeratorInCountingHarmony / juniorHarmonyLevel +
+                                 Constants.NumeratorInCountingHarmony / teamLeadHarmonyLevel);
 
             totalHarmonyLevel += harmonicLevelMean;
         }
