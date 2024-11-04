@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Nsu.Sharps.Hackathon.ConsoleApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9a34ebca393fded7133966dca8c5262dc107b7fc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5e9b2fac443afc0a416c5865ef153987a303c84e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Nsu.Sharps.Hackathon.ConsoleApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Nsu.Sharps.Hackathon.ConsoleApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

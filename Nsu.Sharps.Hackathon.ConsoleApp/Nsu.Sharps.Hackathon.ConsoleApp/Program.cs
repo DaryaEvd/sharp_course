@@ -16,12 +16,11 @@ public class Program
         participants = reader.ReadFile(Constants.PathForTeamLeads);
         var teamLeads = participants.OfType<TeamLead>().ToList();
 
-        var wishlistGenerator = new WishlistGenerator();
         var hrDirector = new HRDirector();
+        var hrManager = new HRManager(juniors, teamLeads);
+        var hackathonExecutor = new HackathonExecutor(juniors, teamLeads, hrManager, hrDirector);
 
-        var hrManager = new HRManager(juniors, teamLeads, wishlistGenerator, hrDirector);
-
-        var averageHarmonyLevel = hrManager.RunHackathons(Constants.AmountOfHackathons);
+        var averageHarmonyLevel = hackathonExecutor.RunHackathons(Constants.AmountOfHackathons);
 
         Console.WriteLine(
             $"\nAverage harmony level of {Constants.AmountOfHackathons} hackathons is {averageHarmonyLevel}");

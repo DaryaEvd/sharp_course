@@ -4,45 +4,63 @@ namespace Nsu.Sharps.Hackathon.ConsoleApp.Services;
 
 public class HRManager
 {
-    private readonly HRDirector _hrDirector;
     private readonly List<Junior> _juniors;
     private readonly List<TeamLead> _teamLeads;
-    private readonly WishlistGenerator _wishlistGenerator;
+    private Dictionary<int, int> _pairings;
 
-    public HRManager(List<Junior> juniors, List<TeamLead> teamLeads, WishlistGenerator wishlistGenerator,
-        HRDirector hrDirector)
+    public HRManager(List<Junior> juniors, List<TeamLead> teamLeads)
     {
-        _wishlistGenerator = wishlistGenerator;
-        _hrDirector = hrDirector;
-
         _juniors = juniors;
         _teamLeads = teamLeads;
+        _pairings = new Dictionary<int, int>();
     }
 
-    public void CheckDataLoaded()
+    public void BuildTeams()
     {
-        if (_juniors == null || !_juniors.Any() || _teamLeads == null || !_teamLeads.Any())
-        {
-            throw new InvalidOperationException("Data not loaded");
-        }
+        _pairings = ExecuteMatchingAlgorithm();
     }
 
-    public double RunHackathons(int numberOfHackathons)
+    public Dictionary<int, int> GetPairings()
     {
-        CheckDataLoaded();
+        return _pairings;
+    }
 
-        double totalHarmonyLevel = 0;
+    private Dictionary<int, int> ExecuteMatchingAlgorithm()
+    {
+        var freeJuniors = new HashSet<int>(_juniors.Select(j => j.Id));
+        var pairings = new Dictionary<int, int>();
+        var juniorPairings = new Dictionary<int, int>();
 
-        for (var i = 1; i <= numberOfHackathons; i++)
+        while (freeJuniors.Count != 0)
         {
-            var hackathon = new Hackathon(_juniors, _teamLeads, _wishlistGenerator, _hrDirector);
+            var juniorId = freeJuniors.First();
+            var junior = _juniors.First(j => j.Id == juniorId);
+            var preferredTeamLeadId = junior.Wishlist.First();
 
-            hackathon.RunOneHackathon();
-            totalHarmonyLevel += hackathon.HarmonyLevel;
-
-            Console.WriteLine($"Harmony level for hackathon #{i}: {hackathon.HarmonyLevel}");
+            if (!pairings.ContainsKey(preferredTeamLeadId))
+            {
+                pairings[preferredTeamLeadId] = juniorId;
+                juniorPairings[juniorId] = preferredTeamLeadId;
+                freeJuniors.Remove(juniorId);
+            }
+            else
+            {
+                var currentJuniorId = pairings[preferredTeamLeadId];
+                var teamLead = _teamLeads.First(t => t.Id == preferredTeamLeadId);
+                if (teamLead.Wishlist.IndexOf(juniorId) < teamLead.Wishlist.IndexOf(currentJuniorId))
+                {
+                    pairings[preferredTeamLeadId] = juniorId;
+                    juniorPairings[juniorId] = preferredTeamLeadId;
+                    freeJuniors.Add(currentJuniorId);
+                    freeJuniors.Remove(juniorId);
+                }
+                else
+                {
+                    junior.Wishlist.Remove(preferredTeamLeadId);
+                }
+            }
         }
 
-        return totalHarmonyLevel / numberOfHackathons;
+        return juniorPairings;
     }
 }

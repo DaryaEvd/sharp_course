@@ -16,10 +16,7 @@ public abstract class Participant
     public int CalculateHarmonyLevel(int targetId, int totalParticipants)
     {
         var index = Wishlist.IndexOf(targetId);
-        if (index < 0)
-        {
-            throw new InvalidOperationException($"{targetId} is not in the wishlist of {Name} (Id: {Id})");
-        }
+        if (index < 0) throw new InvalidOperationException($"{targetId} is not in the wishlist of {Name} (Id: {Id})");
 
         return totalParticipants - index;
     }
