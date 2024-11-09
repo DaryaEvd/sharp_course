@@ -22,8 +22,6 @@ public class GenerateCorrectWishlistSize
         };
             
         var wishlistGenerator = new WishlistGenerator();
-
-        
         wishlistGenerator.GenerateWishlists(juniors, teamLeads);
  
         Assert.All(juniors, junior => 
