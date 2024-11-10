@@ -1,9 +1,19 @@
+using Microsoft.Extensions.Options;
 using Nsu.Sharps.Hackathon.NetGenericHost.Models;
+using Nsu.Sharps.Hackathon.NetGenericHost.Options;
 
 namespace Nsu.Sharps.Hackathon.NetGenericHost.Services;
 
 public class HRDirector
 {
+    private readonly CalculationDataOptions _calculationDataOptions;
+
+    public HRDirector(
+        IOptions<CalculationDataOptions> calculationDataOptions)
+    {
+        _calculationDataOptions = calculationDataOptions.Value;
+    }
+
     public double CalculateHarmonyLevel(Dictionary<int, int> juniorPairings, List<Junior> juniors,
         List<TeamLead> teamLeads)
     {
@@ -21,13 +31,11 @@ public class HRDirector
             var juniorHarmonyLevel = junior.CalculateHarmonyLevel(teamLeadId);
             var teamLeadHarmonyLevel = teamLead.CalculateHarmonyLevel(juniorId);
 
-            double harmonicLevelMean = 0;
+            var harmonicMean = _calculationDataOptions.AmountOfParticipantsInNumerator /
+                               (_calculationDataOptions.NumeratorInCountingHarmony / juniorHarmonyLevel +
+                                _calculationDataOptions.NumeratorInCountingHarmony / teamLeadHarmonyLevel);
 
-            harmonicLevelMean = Constants.AmountOfParticipantsInNumerator /
-                                (Constants.NumeratorInCountingHarmony / juniorHarmonyLevel +
-                                 Constants.NumeratorInCountingHarmony / teamLeadHarmonyLevel);
-
-            totalHarmonyLevel += harmonicLevelMean;
+            totalHarmonyLevel += harmonicMean;
         }
 
         return totalHarmonyLevel / numberOfPairs;
