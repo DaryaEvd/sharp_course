@@ -5,6 +5,13 @@ namespace Nsu.Sharps.Hackathon.NetGenericHost.Services;
 
 public class ReadCsvFile : IReader
 {
+    private readonly ParticipantFactory _participantFactory;
+
+    public ReadCsvFile(ParticipantFactory participantFactory)
+    {
+        _participantFactory = participantFactory;
+    }
+
     public List<Participant> ReadFile(string pathToFile)
     {
         var participants = new List<Participant>();
@@ -21,8 +28,9 @@ public class ReadCsvFile : IReader
             if (!int.TryParse(columns[0], out var id)) continue;
             var name = columns[1];
             if (fileName.StartsWith("junior"))
-                participants.Add(new Junior(id, name));
-            else if (fileName.StartsWith("teamlead")) participants.Add(new TeamLead(id, name));
+                participants.Add(_participantFactory.CreateParticipant(id, name, "junior"));
+            else if (fileName.StartsWith("teamlead"))
+                participants.Add(_participantFactory.CreateParticipant(id, name, "teamlead"));
         }
 
         return participants;

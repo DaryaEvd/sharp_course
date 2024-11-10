@@ -8,17 +8,17 @@ namespace Nsu.Sharps.Hackathon.NetGenericHost.Services;
 
 public class HackathonWorker : IHostedService
 {
+    private readonly AmountValuesOptions _amountValuesOptions;
+    private readonly DataPathOptions _dataPathOptions;
+
     private readonly HRDirector _hrDirector;
     private readonly IReader _reader;
     private readonly WishlistGenerator _wishlistGenerator;
-    
-    private readonly DataPathOptions _dataPathOptions;
-    private readonly AmountValuesOptions _amountValuesOptions;
-    
+
     public HackathonWorker(IReader reader, WishlistGenerator wishlistGenerator, HRDirector hrDirector,
-        IOptions<DataPathOptions> dataPathOptions, 
+        IOptions<DataPathOptions> dataPathOptions,
         IOptions<AmountValuesOptions> amountValuesOptions)
-    {   
+    {
         _reader = reader;
         _wishlistGenerator = wishlistGenerator;
         _hrDirector = hrDirector;
@@ -34,7 +34,7 @@ public class HackathonWorker : IHostedService
         var hackathon = new Hackathon(juniors, teamLeads, _wishlistGenerator, _hrDirector);
 
         double totalHarmonyLevel = 0;
-        int numberOfHackathons = _amountValuesOptions.AmountOfHackathons;
+        var numberOfHackathons = _amountValuesOptions.AmountOfHackathons;
 
         for (var i = 1; i <= numberOfHackathons; i++)
         {

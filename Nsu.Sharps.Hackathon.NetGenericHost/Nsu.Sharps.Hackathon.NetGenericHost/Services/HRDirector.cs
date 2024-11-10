@@ -7,7 +7,9 @@ namespace Nsu.Sharps.Hackathon.NetGenericHost.Services;
 public class HRDirector
 {
     private readonly CalculationDataOptions _calculationDataOptions;
-    public HRDirector(IOptions<CalculationDataOptions> calculationDataOptions)
+
+    public HRDirector(
+        IOptions<CalculationDataOptions> calculationDataOptions)
     {
         _calculationDataOptions = calculationDataOptions.Value;
     }
@@ -29,13 +31,11 @@ public class HRDirector
             var juniorHarmonyLevel = junior.CalculateHarmonyLevel(teamLeadId);
             var teamLeadHarmonyLevel = teamLead.CalculateHarmonyLevel(juniorId);
 
-            double harmonicLevelMean = 0;
+            var harmonicMean = _calculationDataOptions.AmountOfParticipantsInNumerator /
+                               (_calculationDataOptions.NumeratorInCountingHarmony / juniorHarmonyLevel +
+                                _calculationDataOptions.NumeratorInCountingHarmony / teamLeadHarmonyLevel);
 
-            harmonicLevelMean = _calculationDataOptions.AmountOfParticipantsInNumerator /
-                                                            (_calculationDataOptions.NumeratorInCountingHarmony / juniorHarmonyLevel +
-                                                             _calculationDataOptions.NumeratorInCountingHarmony / teamLeadHarmonyLevel);
-
-            totalHarmonyLevel += harmonicLevelMean;
+            totalHarmonyLevel += harmonicMean;
         }
 
         return totalHarmonyLevel / numberOfPairs;
