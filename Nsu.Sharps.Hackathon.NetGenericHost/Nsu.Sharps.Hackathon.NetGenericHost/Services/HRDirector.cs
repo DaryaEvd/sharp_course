@@ -1,17 +1,14 @@
-using Microsoft.Extensions.Options;
 using Nsu.Sharps.Hackathon.NetGenericHost.Models;
-using Nsu.Sharps.Hackathon.NetGenericHost.Options;
 
 namespace Nsu.Sharps.Hackathon.NetGenericHost.Services;
 
 public class HRDirector
 {
-    private readonly CalculationDataOptions _calculationDataOptions;
+    private readonly HarmonyCalculator _harmonyCalculator;
 
-    public HRDirector(
-        IOptions<CalculationDataOptions> calculationDataOptions)
+    public HRDirector(HarmonyCalculator harmonyCalculator)
     {
-        _calculationDataOptions = calculationDataOptions.Value;
+        _harmonyCalculator = harmonyCalculator;
     }
 
     public double CalculateHarmonyLevel(Dictionary<int, int> juniorPairings, List<Junior> juniors,
@@ -28,14 +25,10 @@ public class HRDirector
             var junior = juniors.First(j => j.Id == juniorId);
             var teamLead = teamLeads.First(tl => tl.Id == teamLeadId);
 
-            var juniorHarmonyLevel = junior.CalculateHarmonyLevel(teamLeadId);
-            var teamLeadHarmonyLevel = teamLead.CalculateHarmonyLevel(juniorId);
+            var juniorHarmonyLevel = _harmonyCalculator.CalculateHarmonyLevel(junior, teamLeadId, true);
+            var teamLeadHarmonyLevel = _harmonyCalculator.CalculateHarmonyLevel(teamLead, juniorId, false);
 
-            var harmonicMean = _calculationDataOptions.AmountOfParticipantsInNumerator /
-                               (_calculationDataOptions.NumeratorInCountingHarmony / juniorHarmonyLevel +
-                                _calculationDataOptions.NumeratorInCountingHarmony / teamLeadHarmonyLevel);
-
-            totalHarmonyLevel += harmonicMean;
+            totalHarmonyLevel += _harmonyCalculator.CalculateHarmonicMean(juniorHarmonyLevel, teamLeadHarmonyLevel);
         }
 
         return totalHarmonyLevel / numberOfPairs;

@@ -24,7 +24,7 @@ public class Program
                 services.AddTransient<IReader, ReadCsvFile>();
                 services.AddTransient<WishlistGenerator>();
                 services.AddTransient<Hackathon>();
-                services.AddTransient<ParticipantFactory>();
+                services.AddTransient<HarmonyCalculator>();
                 services.AddTransient<HRDirector>();
                 services.AddTransient<HRManager>();
             })

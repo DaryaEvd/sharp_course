@@ -29,13 +29,13 @@ public class HRManager
         {
             var juniorId = freeJuniors.First();
             var junior = _juniors.First(j => j.Id == juniorId);
-            
+
             if (junior.Wishlist == null || !junior.Wishlist.Any())
             {
                 freeJuniors.Remove(juniorId);
                 continue;
             }
-            
+
             var preferredTeamLeadId = junior.Wishlist.First();
 
             if (!IsTeamLeadPaired(preferredTeamLeadId, pairings))
@@ -72,8 +72,8 @@ public class HRManager
         Dictionary<int, int> juniorPairings, HashSet<int> freeJuniors)
     {
         var currentJuniorId = pairings[teamLeadId];
-        var teamLead = _teamLeads.First(t => t.Id == teamLeadId); 
-        
+        var teamLead = _teamLeads.First(t => t.Id == teamLeadId);
+
         if (!DoesTeamLeadPreferNewJunior(teamLead, newJuniorId, currentJuniorId))
         {
             var newJunior = _juniors.FirstOrDefault(j => j.Id == newJuniorId);

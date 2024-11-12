@@ -1,15 +1,17 @@
+using Microsoft.Extensions.Options;
 using Nsu.Sharps.Hackathon.NetGenericHost.Interfaces;
 using Nsu.Sharps.Hackathon.NetGenericHost.Models;
+using Nsu.Sharps.Hackathon.NetGenericHost.Options;
 
 namespace Nsu.Sharps.Hackathon.NetGenericHost.Services;
 
 public class ReadCsvFile : IReader
 {
-    private readonly ParticipantFactory _participantFactory;
+    private readonly AmountValuesOptions _options;
 
-    public ReadCsvFile(ParticipantFactory participantFactory)
+    public ReadCsvFile(IOptions<AmountValuesOptions> options)
     {
-        _participantFactory = participantFactory;
+        _options = options.Value;
     }
 
     public List<Participant> ReadFile(string pathToFile)
@@ -28,9 +30,8 @@ public class ReadCsvFile : IReader
             if (!int.TryParse(columns[0], out var id)) continue;
             var name = columns[1];
             if (fileName.StartsWith("junior"))
-                participants.Add(_participantFactory.CreateParticipant(id, name, "junior"));
-            else if (fileName.StartsWith("teamlead"))
-                participants.Add(_participantFactory.CreateParticipant(id, name, "teamlead"));
+                participants.Add(new Junior(id, name));
+            else if (fileName.StartsWith("teamlead")) participants.Add(new TeamLead(id, name));
         }
 
         return participants;
