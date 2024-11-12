@@ -29,6 +29,13 @@ public class HRManager
         {
             var juniorId = freeJuniors.First();
             var junior = _juniors.First(j => j.Id == juniorId);
+
+            if (junior.Wishlist == null || !junior.Wishlist.Any())
+            {
+                freeJuniors.Remove(juniorId);
+                continue;
+            }
+
             var preferredTeamLeadId = junior.Wishlist.First();
 
             if (!IsTeamLeadPaired(preferredTeamLeadId, pairings))
