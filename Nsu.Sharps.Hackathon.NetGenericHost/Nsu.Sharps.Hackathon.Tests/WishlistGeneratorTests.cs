@@ -6,27 +6,40 @@ namespace Nsu.Sharps.Hackathon.Tests;
 public class WishlistGeneratorTests
 {
     [Fact]
-    public void ShouldHaveSameCountAsParticipants()
+    public void WishlistTests()
     {
-        var juniors = new List<Junior> { new(1, "Junior1", 3), new(2, "Junior2", 3) };
-        var teamLeads = new List<TeamLead> { new(1, "TeamLead1", 2), new(2, "TeamLead2", 2) };
-        var generator = new WishlistGenerator();
+        var junior1 = new Junior(1, "Junior1", 3);
+        var junior2 = new Junior(2, "Junior2", 3);
+        var junior3 = new Junior(3, "Junior3", 3);
 
-        generator.GenerateWishlists(juniors, teamLeads);
+        var teamlead1 = new TeamLead(1, "Teamlead1", 3);
+        var teamlead2 = new TeamLead(2, "Teamlead2", 3);
+        var teamlead3 = new TeamLead(3, "Teamlead3", 3);
+        
+        var juniors = new List<Junior> { junior1, junior2, junior3 };
+        var teamLeads = new List<TeamLead> {teamlead1, teamlead2, teamlead3};
 
-        Assert.Equal(teamLeads.Count, juniors[0].Wishlist.Count);
-        Assert.Equal(juniors.Count, teamLeads[0].Wishlist.Count);
-    }
+        var wishlistGenerator = new WishlistGenerator();
+        wishlistGenerator.GenerateWishlists(juniors, teamLeads);
 
-    [Fact]
-    public void ShouldContainSpecificParticipant()
-    {
-        var juniors = new List<Junior> { new(1, "Junior1", 3), new(2, "Junior2", 3) };
-        var teamLeads = new List<TeamLead> { new(1, "TeamLead1", 2), new(2, "TeamLead2", 2) };
-        var generator = new WishlistGenerator();
-
-        generator.GenerateWishlists(juniors, teamLeads);
-
-        Assert.Contains(1, juniors[0].Wishlist);
+        Assert.Equal(teamLeads.Count, teamLeads[0].Wishlist.Count);
+        Assert.Equal(juniors.Count, juniors[0].Wishlist.Count);
+        
+        foreach (var junior in juniors)
+        {
+            foreach (var teamLead in teamLeads)
+            {
+                Assert.Contains(teamLead.Id, junior.Wishlist);
+            }
+        }
+        
+        foreach (var teamLead in teamLeads)
+        {
+            foreach (var junior in juniors)
+            {
+                Assert.Contains(junior.Id, teamLead.Wishlist);
+            }
+        }
+       
     }
 }
