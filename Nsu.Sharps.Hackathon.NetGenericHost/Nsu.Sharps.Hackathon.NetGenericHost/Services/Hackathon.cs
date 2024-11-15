@@ -22,9 +22,9 @@ public class Hackathon
     {
         _wishlistGenerator.GenerateWishlists(_juniors, _teamLeads);
 
-        var hrManager = new HRManager(_juniors, _teamLeads, _wishlistGenerator, _hrDirector);
-        var pairings = hrManager.ExecuteMatchingAlgorithm();
+        var hrManager = new HRManager(_juniors, _teamLeads);
+        var teams = hrManager.ExecuteMatchingAlgorithm();
 
-        return _hrDirector.CalculateHarmonyLevel(pairings, _juniors, _teamLeads);
+        return _hrDirector.CalculateHarmonyLevel(teams);
     }
 }

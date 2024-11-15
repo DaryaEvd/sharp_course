@@ -11,26 +11,18 @@ public class HRDirector
         _harmonyCalculator = harmonyCalculator;
     }
 
-    public double CalculateHarmonyLevel(Dictionary<int, int> juniorPairings, List<Junior> juniors,
-        List<TeamLead> teamLeads)
+    public double CalculateHarmonyLevel(List<Team> teams)
     {
         double totalHarmonyLevel = 0;
-        var numberOfPairs = juniorPairings.Count;
 
-        foreach (var pair in juniorPairings)
+        foreach (var team in teams)
         {
-            var juniorId = pair.Key;
-            var teamLeadId = pair.Value;
-
-            var junior = juniors.First(j => j.Id == juniorId);
-            var teamLead = teamLeads.First(tl => tl.Id == teamLeadId);
-
-            var juniorHarmonyLevel = _harmonyCalculator.CalculateHarmonyLevel(junior, teamLeadId, true);
-            var teamLeadHarmonyLevel = _harmonyCalculator.CalculateHarmonyLevel(teamLead, juniorId, false);
+            var juniorHarmonyLevel = _harmonyCalculator.CalculateHarmonyLevel(team.Junior, team.TeamLead.Id, true);
+            var teamLeadHarmonyLevel = _harmonyCalculator.CalculateHarmonyLevel(team.TeamLead, team.Junior.Id, false);
 
             totalHarmonyLevel += _harmonyCalculator.CalculateHarmonicMean(juniorHarmonyLevel, teamLeadHarmonyLevel);
         }
 
-        return totalHarmonyLevel / numberOfPairs;
+        return totalHarmonyLevel / teams.Count;
     }
 }

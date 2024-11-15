@@ -1,18 +1,16 @@
-using Microsoft.Extensions.Options;
 using Nsu.Sharps.Hackathon.NetGenericHost.Interfaces;
 using Nsu.Sharps.Hackathon.NetGenericHost.Models;
-using Nsu.Sharps.Hackathon.NetGenericHost.Options;
 
 namespace Nsu.Sharps.Hackathon.NetGenericHost.Services;
 
 public class ReadCsvFile : IReader
 {
-    private readonly AmountValuesOptions _options;
-
-    public ReadCsvFile(IOptions<AmountValuesOptions> options)
-    {
-        _options = options.Value;
-    }
+    // private readonly AmountValuesOptions _options;
+    //
+    // public ReadCsvFile(IOptions<AmountValuesOptions> options)
+    // {
+    //     _options = options.Value;
+    // }
 
     public List<Participant> ReadFile(string pathToFile)
     {

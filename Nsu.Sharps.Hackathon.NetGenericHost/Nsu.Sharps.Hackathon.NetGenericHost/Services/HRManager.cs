@@ -4,26 +4,20 @@ namespace Nsu.Sharps.Hackathon.NetGenericHost.Services;
 
 public class HRManager
 {
-    private readonly HRDirector _hrDirector;
     private readonly List<Junior> _juniors;
     private readonly List<TeamLead> _teamLeads;
-    private readonly WishlistGenerator _wishlistGenerator;
 
-    public HRManager(List<Junior> juniors, List<TeamLead> teamLeads, WishlistGenerator wishlistGenerator,
-        HRDirector hrDirector)
+    public HRManager(List<Junior> juniors, List<TeamLead> teamLeads)
     {
-        _wishlistGenerator = wishlistGenerator;
-        _hrDirector = hrDirector;
-
         _juniors = juniors;
         _teamLeads = teamLeads;
     }
 
-    public Dictionary<int, int> ExecuteMatchingAlgorithm()
+    public List<Team> ExecuteMatchingAlgorithm()
     {
         var freeJuniors = new HashSet<int>(_juniors.Select(j => j.Id));
         var pairings = new Dictionary<int, int>();
-        var juniorPairings = new Dictionary<int, int>();
+        var teams = new List<Team>();
 
         while (freeJuniors.Count != 0)
         {
@@ -39,12 +33,12 @@ public class HRManager
             var preferredTeamLeadId = junior.Wishlist.First();
 
             if (!IsTeamLeadPaired(preferredTeamLeadId, pairings))
-                FormPair(preferredTeamLeadId, juniorId, pairings, juniorPairings, freeJuniors);
+                FormPair(preferredTeamLeadId, juniorId, pairings, freeJuniors, teams);
             else
-                HandleExistingPair(preferredTeamLeadId, juniorId, pairings, juniorPairings, freeJuniors);
+                HandleExistingPair(preferredTeamLeadId, juniorId, pairings, freeJuniors, teams);
         }
 
-        return juniorPairings;
+        return teams;
     }
 
     private bool IsTeamLeadPaired(int teamLeadId, Dictionary<int, int> pairings)
@@ -52,12 +46,15 @@ public class HRManager
         return pairings.ContainsKey(teamLeadId);
     }
 
-    private void FormPair(int teamLeadId, int juniorId, Dictionary<int, int> pairings,
-        Dictionary<int, int> juniorPairings, HashSet<int> freeJuniors)
+    private void FormPair(int teamLeadId, int juniorId, Dictionary<int, int> pairings, HashSet<int> freeJuniors,
+        List<Team> teams)
     {
         pairings[teamLeadId] = juniorId;
-        juniorPairings[juniorId] = teamLeadId;
         freeJuniors.Remove(juniorId);
+
+        var teamLead = _teamLeads.First(t => t.Id == teamLeadId);
+        var junior = _juniors.First(j => j.Id == juniorId);
+        teams.Add(new Team(teamLead, junior));
     }
 
     private bool DoesTeamLeadPreferNewJunior(TeamLead teamLead, int newJuniorId, int currentJuniorId)
@@ -69,21 +66,26 @@ public class HRManager
     }
 
     private void HandleExistingPair(int teamLeadId, int newJuniorId, Dictionary<int, int> pairings,
-        Dictionary<int, int> juniorPairings, HashSet<int> freeJuniors)
+        HashSet<int> freeJuniors, List<Team> teams)
     {
         var currentJuniorId = pairings[teamLeadId];
         var teamLead = _teamLeads.First(t => t.Id == teamLeadId);
 
-        if (!DoesTeamLeadPreferNewJunior(teamLead, newJuniorId, currentJuniorId))
+        if (DoesTeamLeadPreferNewJunior(teamLead, newJuniorId, currentJuniorId))
+        {
+            teams.RemoveAll(team => team.TeamLead.Id == teamLeadId && team.Junior.Id == currentJuniorId);
+
+            pairings[teamLeadId] = newJuniorId;
+            freeJuniors.Remove(newJuniorId);
+            freeJuniors.Add(currentJuniorId);
+
+            var newJunior = _juniors.First(j => j.Id == newJuniorId);
+            teams.Add(new Team(teamLead, newJunior));
+        }
+        else
         {
             var newJunior = _juniors.FirstOrDefault(j => j.Id == newJuniorId);
             if (newJunior != null) newJunior.Wishlist.Remove(teamLeadId);
         }
-
-        pairings[teamLeadId] = newJuniorId;
-        juniorPairings.Remove(currentJuniorId);
-        juniorPairings[newJuniorId] = teamLeadId;
-        freeJuniors.Add(currentJuniorId);
-        freeJuniors.Remove(newJuniorId);
     }
 }
