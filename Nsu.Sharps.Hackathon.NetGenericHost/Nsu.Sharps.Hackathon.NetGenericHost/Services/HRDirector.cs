@@ -17,8 +17,8 @@ public class HRDirector
 
         foreach (var team in teams)
         {
-            var juniorHarmonyLevel = _harmonyCalculator.CalculateHarmonyLevel(team.Junior, team.TeamLead.Id, true);
-            var teamLeadHarmonyLevel = _harmonyCalculator.CalculateHarmonyLevel(team.TeamLead, team.Junior.Id, false);
+            var juniorHarmonyLevel = _harmonyCalculator.CalculateHarmonyLevel(team.Junior, team.TeamLead.Id);
+            var teamLeadHarmonyLevel = _harmonyCalculator.CalculateHarmonyLevel(team.TeamLead, team.Junior.Id);
 
             totalHarmonyLevel += _harmonyCalculator.CalculateHarmonicMean(juniorHarmonyLevel, teamLeadHarmonyLevel);
         }
