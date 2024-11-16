@@ -5,13 +5,6 @@ namespace Nsu.Sharps.Hackathon.NetGenericHost.Services;
 
 public class ReadCsvFile : IReader
 {
-    // private readonly AmountValuesOptions _options;
-    //
-    // public ReadCsvFile(IOptions<AmountValuesOptions> options)
-    // {
-    //     _options = options.Value;
-    // }
-
     public List<Participant> ReadFile(string pathToFile)
     {
         var participants = new List<Participant>();

@@ -22,10 +22,8 @@ public abstract class Participant
     {
         var preferenceRank = Wishlist.IndexOf(preferredId);
         if (preferenceRank < 0)
-        {
             throw new InvalidOperationException(
                 $"{preferredId} is not in the wishlist of {Name} (Id: {Id})");
-        }
 
         return totalParticipantsInTeam - preferenceRank;
     }

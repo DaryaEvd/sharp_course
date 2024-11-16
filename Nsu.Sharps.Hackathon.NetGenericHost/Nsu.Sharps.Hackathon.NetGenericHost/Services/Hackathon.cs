@@ -27,4 +27,18 @@ public class Hackathon
 
         return _hrDirector.CalculateHarmonyLevel(teams);
     }
+
+    public double CalculateAverageHarmonyLevel(int numberOfHackathons)
+    {
+        double totalHarmonyLevel = 0;
+
+        for (var i = 1; i <= numberOfHackathons; i++)
+        {
+            var harmonyLevel = RunOneHackathon();
+            totalHarmonyLevel += harmonyLevel;
+            Console.WriteLine($"Harmony level for hackathon #{i}: {harmonyLevel}");
+        }
+
+        return totalHarmonyLevel / numberOfHackathons;
+    }
 }

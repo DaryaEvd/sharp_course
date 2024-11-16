@@ -23,6 +23,7 @@ public class Program
                 services.AddHostedService<HackathonWorker>();
                 services.AddTransient<IReader, ReadCsvFile>();
                 services.AddTransient<WishlistGenerator>();
+                services.AddTransient<HackathonFactory>();
                 services.AddTransient<Hackathon>();
                 services.AddTransient<HarmonyCalculator>();
                 services.AddTransient<HRDirector>();
