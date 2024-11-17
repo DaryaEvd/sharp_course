@@ -23,10 +23,19 @@ public class HarmonyCalculator
         return participant.CalculateHarmonyLevelByParticipant(targetId, totalParticipants);
     }
 
-    public double CalculateHarmonicMean(int juniorHarmonyLevel, int teamLeadHarmonyLevel)
+    // public double CalculateHarmonicMean(int juniorHarmonyLevel, int teamLeadHarmonyLevel)
+    // {
+    //     return _calculationDataOptions.AmountOfParticipantsInNumerator /
+    //            (_calculationDataOptions.NumeratorInCountingHarmony / juniorHarmonyLevel +
+    //             _calculationDataOptions.NumeratorInCountingHarmony / teamLeadHarmonyLevel);
+    // }
+
+    public double CalculateHarmonicMean(List<int> values)
     {
-        return _calculationDataOptions.AmountOfParticipantsInNumerator /
-               (_calculationDataOptions.NumeratorInCountingHarmony / juniorHarmonyLevel +
-                _calculationDataOptions.NumeratorInCountingHarmony / teamLeadHarmonyLevel);
+        if (values == null || values.Count == 0)
+            throw new ArgumentException("List of values cannot be null or empty.");
+
+        var denominator = values.Sum(value => 1.0 / value);
+        return _calculationDataOptions.AmountOfParticipantsInNumerator / denominator;
     }
 }
