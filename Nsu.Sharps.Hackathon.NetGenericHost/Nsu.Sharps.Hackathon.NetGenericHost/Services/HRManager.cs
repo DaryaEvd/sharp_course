@@ -22,9 +22,9 @@ public class HRManager
         while (freeJuniors.Count != 0)
         {
             var juniorId = freeJuniors.First();
-            var junior = _juniors.First(j => j.Id == juniorId);
+            var junior = _juniors.FirstOrDefault(j => j.Id == juniorId);
 
-            if (junior.Wishlist == null || !junior.Wishlist.Any())
+            if (junior == null || junior.Wishlist == null || !junior.Wishlist.Any())
             {
                 freeJuniors.Remove(juniorId);
                 continue;
