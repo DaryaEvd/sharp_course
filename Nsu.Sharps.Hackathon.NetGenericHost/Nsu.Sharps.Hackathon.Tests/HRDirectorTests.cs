@@ -46,10 +46,12 @@ public class HRDirectorTests
         secondValue = 50;
         result = harmonyCalculator.CalculateHarmonicMean(firstValue, secondValue);
         Assert.Equal(1.96, Math.Round(result, 2));
+        
+
     }
 
     [Fact]
-    public void PredefinedTeamsAndWishlistsShouldReturnExpectedHarmonyLevel() //todo: to think, doesn't work
+    public void PredefinedTeamsAndWishlistsShouldReturnExpectedHarmonyLevel()
     {
         var calculationOptions = Options.Create(new CalculationDataOptions
         {
@@ -58,7 +60,7 @@ public class HRDirectorTests
         });
         var amountOptions = Options.Create(new AmountValuesOptions
         {
-            AmountOfParticipantsInOneTeam = 2
+            AmountOfParticipantsFromOneSide = 2
         });
 
         var harmonyCalculator = new HarmonyCalculator(calculationOptions, amountOptions);
@@ -66,16 +68,21 @@ public class HRDirectorTests
 
         var teams = new List<Team>
         {
-            new(new TeamLead(1, "TeamLead 1") { Wishlist = new List<int> { 1 } },
-                new Junior(1, "Junior 1") { Wishlist = new List<int> { 1 } }),
-            new(new TeamLead(2, "TeamLead 2") { Wishlist = new List<int> { 2 } },
-                new Junior(2, "Junior 2") { Wishlist = new List<int> { 2 } })
+            new Team(
+                new TeamLead(1, "TeamLead 1") { Wishlist = new List<int> { 1 } },
+                new Junior(1, "Junior 1") { Wishlist = new List<int> { 1 } }
+            ),
+            new Team(
+                new TeamLead(2, "TeamLead 2") { Wishlist = new List<int> { 2 } },
+                new Junior(2, "Junior 2") { Wishlist = new List<int> { 2 } }
+            )
         };
 
-        var expectedHarmonyLevel = 1.0;
-
+        var expectedHarmonyLevel = 2;
+ 
         var result = hrDirector.CalculateHarmonyLevel(teams);
-
+ 
         Assert.Equal(expectedHarmonyLevel, result);
     }
+
 }

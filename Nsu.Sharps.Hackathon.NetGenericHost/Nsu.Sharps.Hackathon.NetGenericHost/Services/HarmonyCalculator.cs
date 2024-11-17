@@ -19,7 +19,7 @@ public class HarmonyCalculator
 
     public int CalculateHarmonyLevel(Participant participant, int targetId)
     {
-        var totalParticipants = _amountValuesOptions.AmountOfParticipantsInOneTeam;
+        var totalParticipants = _amountValuesOptions.AmountOfParticipantsFromOneSide;
         return participant.CalculateHarmonyLevelByParticipant(targetId, totalParticipants);
     }
 
