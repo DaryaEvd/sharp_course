@@ -1,12 +1,7 @@
-using Microsoft.Extensions.Options;
-using Nsu.Sharps.Hackathon.NetGenericHost.Options;
-
 namespace Nsu.Sharps.Hackathon.NetGenericHost.Models;
 
 public abstract class Participant
 {
-    private IOptions<AmountValuesOptions> amountOptions;
-
     protected Participant(int id, string name)
     {
         Id = id;

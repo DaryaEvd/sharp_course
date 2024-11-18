@@ -20,9 +20,8 @@ public class HRDirector
             var juniorHarmonyLevel = _harmonyCalculator.CalculateHarmonyLevel(team.Junior, team.TeamLead.Id);
             var teamLeadHarmonyLevel = _harmonyCalculator.CalculateHarmonyLevel(team.TeamLead, team.Junior.Id);
 
-            // totalHarmonyLevel += _harmonyCalculator.CalculateHarmonicMean(juniorHarmonyLevel, teamLeadHarmonyLevel);
-
             var harmonyLevels = new List<int> { juniorHarmonyLevel, teamLeadHarmonyLevel };
+
             totalHarmonyLevel += _harmonyCalculator.CalculateHarmonicMean(harmonyLevels);
         }
 

@@ -24,24 +24,12 @@ public class HRManagerTests
             new(3, "TeamLead 3") { Wishlist = new List<int> { 3, 1, 2 } }
         };
 
-        var mockStrategy = new Mock<IMatchingStrategy>();
+        var hrManager = new HRManager(new DefaultMatchingStrategy());
 
-        mockStrategy.Setup(m => m.ExecuteMatchingAlgorithm(juniors, teamLeads))
-            .Returns(new List<Team>
-            {
-                new(teamLeads[0], juniors[0]),
-                new(teamLeads[1], juniors[1]),
-                new(teamLeads[2], juniors[2])
-            });
-
-        var hrManager = new HRManager(juniors, teamLeads, mockStrategy.Object);
-
-        var teams = hrManager.BuildTeams();
-
+        var teams = hrManager.BuildTeams(juniors, teamLeads);
 
         Assert.Equal(juniors.Count, teams.Count);
     }
-
 
     [Fact]
     public void OnPredefinedPreferencesShouldReturnExpectedDistribution()
@@ -60,19 +48,9 @@ public class HRManagerTests
             new(3, "TeamLead 3") { Wishlist = new List<int> { 3, 1, 2 } }
         };
 
-        var mockStrategy = new Mock<IMatchingStrategy>();
+        var hrManager = new HRManager(new DefaultMatchingStrategy());
 
-        mockStrategy.Setup(m => m.ExecuteMatchingAlgorithm(juniors, teamLeads))
-            .Returns(new List<Team>
-            {
-                new(teamLeads[0], juniors[0]),
-                new(teamLeads[1], juniors[1]),
-                new(teamLeads[2], juniors[2])
-            });
-
-        var hrManager = new HRManager(juniors, teamLeads, mockStrategy.Object);
-
-        var teams = hrManager.BuildTeams();
+        var teams = hrManager.BuildTeams(juniors, teamLeads);
 
         var expectedTeams = new List<(int TeamLeadId, int JuniorId)>
         {
@@ -88,7 +66,7 @@ public class HRManagerTests
     }
 
     [Fact]
-    public void ExecuteMatchingAlgorithm_ShouldBeCalledOnce()
+    public void StrategyShouldBeCalledOnce()
     {
         var juniors = new List<Junior>
         {
@@ -106,10 +84,9 @@ public class HRManagerTests
 
         var mockStrategy = new Mock<IMatchingStrategy>();
 
-        var hrManager = new HRManager(juniors, teamLeads, mockStrategy.Object);
+        var hrManager = new HRManager(mockStrategy.Object);
 
-        hrManager.BuildTeams();
-
+        hrManager.BuildTeams(juniors, teamLeads);
         mockStrategy.Verify(m => m.ExecuteMatchingAlgorithm(juniors, teamLeads), Times.Once);
     }
 }

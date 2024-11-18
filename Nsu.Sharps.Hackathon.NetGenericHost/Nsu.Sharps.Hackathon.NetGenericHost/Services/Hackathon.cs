@@ -24,9 +24,7 @@ public class Hackathon
     public double RunOneHackathon()
     {
         _wishlistGenerator.GenerateWishlists(_juniors, _teamLeads);
-
-        var hrManager = new HRManager(_juniors, _teamLeads, _matchingStrategy);
-        var teams = hrManager.BuildTeams();
+        var teams = _matchingStrategy.ExecuteMatchingAlgorithm(_juniors, _teamLeads);
 
         return _hrDirector.CalculateHarmonyLevel(teams);
     }

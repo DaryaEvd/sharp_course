@@ -21,6 +21,7 @@ public class Program
                 services.Configure<CalculationDataOptions>(hostContext.Configuration.GetSection("CalculationData"));
 
                 services.AddHostedService<HackathonWorker>();
+                services.AddTransient<IDataLoader, FileDataLoader>();
                 services.AddTransient<IReader, ReadCsvFile>();
                 services.AddTransient<WishlistGenerator>();
                 services.AddTransient<HackathonFactory>();

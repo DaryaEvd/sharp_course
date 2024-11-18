@@ -23,13 +23,6 @@ public class HarmonyCalculator
         return participant.CalculateHarmonyLevelByParticipant(targetId, totalParticipants);
     }
 
-    // public double CalculateHarmonicMean(int juniorHarmonyLevel, int teamLeadHarmonyLevel)
-    // {
-    //     return _calculationDataOptions.AmountOfParticipantsInNumerator /
-    //            (_calculationDataOptions.NumeratorInCountingHarmony / juniorHarmonyLevel +
-    //             _calculationDataOptions.NumeratorInCountingHarmony / teamLeadHarmonyLevel);
-    // }
-
     public double CalculateHarmonicMean(List<int> values)
     {
         if (values == null || values.Count == 0)

@@ -8,6 +8,6 @@ public class Team
         Junior = junior;
     }
 
-    public TeamLead TeamLead { get; set; }
-    public Junior Junior { get; set; }
+    public TeamLead TeamLead { get; }
+    public Junior Junior { get; }
 }
