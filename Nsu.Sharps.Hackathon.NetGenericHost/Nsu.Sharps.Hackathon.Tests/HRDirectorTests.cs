@@ -1,21 +1,22 @@
-using Microsoft.Extensions.Options;
 using Nsu.Sharps.Hackathon.NetGenericHost.Models;
-using Nsu.Sharps.Hackathon.NetGenericHost.Options;
 using Nsu.Sharps.Hackathon.NetGenericHost.Services;
 
 namespace Nsu.Sharps.Hackathon.Tests;
 
 public class HRDirectorTests
 {
+    private readonly Fixture _fixture;
+
+    public HRDirectorTests()
+    {
+        _fixture = new Fixture();
+    }
+
     [Fact]
     public void HarmonicMeanOfEqualNumbersShouldEqualToNumber()
     {
-        var calculationOptions = Options.Create(new CalculationDataOptions
-        {
-            AmountOfParticipantsInNumerator = 2.0,
-            NumeratorInCountingHarmony = 1.0
-        });
-        var amountOptions = Options.Create(new AmountValuesOptions());
+        var calculationOptions = _fixture.CreateCalculationDataOptions(2, 1);
+        var amountOptions = _fixture.CreateAmountValuesOptions(0);
         var harmonyCalculator = new HarmonyCalculator(calculationOptions, amountOptions);
 
         var value = 50;
@@ -25,39 +26,29 @@ public class HRDirectorTests
         Assert.Equal(value, result);
     }
 
-    [Fact]
-    public void CheckCorrectnessOfHarmonicMean()
+    //todo: signature??
+    [Theory]
+    [InlineData(new[] { 2, 6 }, 3)]
+    [InlineData(new[] { 1, 50 }, 1.9608)]
+    public void CheckCorrectnessOfHarmonicMean(int[] valuesArray, double expected)
     {
-        var calculationOptions = Options.Create(new CalculationDataOptions
-        {
-            AmountOfParticipantsInNumerator = 2,
-            NumeratorInCountingHarmony = 1.0
-        });
-        var amountOptions = Options.Create(new AmountValuesOptions());
+        var calculationOptions = _fixture.CreateCalculationDataOptions(2, 1);
+        var amountOptions = _fixture.CreateAmountValuesOptions(0);
+
         var harmonyCalculator = new HarmonyCalculator(calculationOptions, amountOptions);
 
-        var values = new List<int> { 2, 6 };
-        var result = harmonyCalculator.CalculateHarmonicMean(values);
-        Assert.Equal(3, result);
+        var values = new List<int>(valuesArray);
 
-        values = new List<int> { 1, 50 };
-        result = harmonyCalculator.CalculateHarmonicMean(values);
-        Assert.Equal(1.9608, result, 4);
+        var result = harmonyCalculator.CalculateHarmonicMean(values);
+
+        Assert.Equal(expected, result, 4);
     }
 
     [Fact]
     public void HarmonicMeanCalculationForMultipleValues()
     {
-        var calculationOptions = Options.Create(new CalculationDataOptions
-        {
-            AmountOfParticipantsInNumerator = 3.0,
-            NumeratorInCountingHarmony = 1.0
-        });
-
-        var amountOptions = Options.Create(new AmountValuesOptions
-        {
-            AmountOfParticipantsFromOneSide = 3
-        });
+        var calculationOptions = _fixture.CreateCalculationDataOptions(3, 1);
+        var amountOptions = _fixture.CreateAmountValuesOptions(3);
 
         var harmonyCalculator = new HarmonyCalculator(calculationOptions, amountOptions);
 
@@ -70,19 +61,11 @@ public class HRDirectorTests
         Assert.Equal(expectedHarmonicMean, harmonicMean, 5);
     }
 
-
     [Fact]
     public void PredefinedTeamsAndWishlistsShouldReturnExpectedHarmonyLevel()
     {
-        var calculationOptions = Options.Create(new CalculationDataOptions
-        {
-            AmountOfParticipantsInNumerator = 2.0,
-            NumeratorInCountingHarmony = 1.0
-        });
-        var amountOptions = Options.Create(new AmountValuesOptions
-        {
-            AmountOfParticipantsFromOneSide = 2
-        });
+        var calculationOptions = _fixture.CreateCalculationDataOptions(2, 1);
+        var amountOptions = _fixture.CreateAmountValuesOptions(2);
 
         var harmonyCalculator = new HarmonyCalculator(calculationOptions, amountOptions);
         var hrDirector = new HRDirector(harmonyCalculator);

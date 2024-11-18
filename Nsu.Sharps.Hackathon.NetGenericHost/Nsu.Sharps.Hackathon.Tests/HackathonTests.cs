@@ -12,8 +12,8 @@ public class HackathonTests
     {
         var calculationOptions = Options.Create(new CalculationDataOptions
         {
-            AmountOfParticipantsInNumerator = 2.0,
-            NumeratorInCountingHarmony = 1.0
+            AmountOfParticipantsInNumerator = 2,
+            NumeratorInCountingHarmony = 1
         });
         var amountOptions = Options.Create(new AmountValuesOptions
         {
