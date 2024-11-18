@@ -26,6 +26,7 @@ public class Program
                 services.AddTransient<HackathonFactory>();
                 services.AddTransient<Hackathon>();
                 services.AddTransient<HarmonyCalculator>();
+                services.AddTransient<IMatchingStrategy, DefaultMatchingStrategy>();
                 services.AddTransient<HRDirector>();
                 services.AddTransient<HRManager>();
             })

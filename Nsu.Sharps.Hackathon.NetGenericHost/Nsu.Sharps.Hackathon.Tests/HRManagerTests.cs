@@ -1,3 +1,5 @@
+using Moq;
+using Nsu.Sharps.Hackathon.NetGenericHost.Interfaces;
 using Nsu.Sharps.Hackathon.NetGenericHost.Models;
 using Nsu.Sharps.Hackathon.NetGenericHost.Services;
 
@@ -22,9 +24,20 @@ public class HRManagerTests
             new(3, "TeamLead 3") { Wishlist = new List<int> { 3, 1, 2 } }
         };
 
-        var hrManager = new HRManager(juniors, teamLeads);
+        var mockStrategy = new Mock<IMatchingStrategy>();
 
-        var teams = hrManager.ExecuteMatchingAlgorithm();
+        mockStrategy.Setup(m => m.ExecuteMatchingAlgorithm(juniors, teamLeads))
+            .Returns(new List<Team>
+            {
+                new(teamLeads[0], juniors[0]),
+                new(teamLeads[1], juniors[1]),
+                new(teamLeads[2], juniors[2])
+            });
+
+        var hrManager = new HRManager(juniors, teamLeads, mockStrategy.Object);
+
+        var teams = hrManager.BuildTeams();
+
 
         Assert.Equal(juniors.Count, teams.Count);
     }
@@ -47,9 +60,19 @@ public class HRManagerTests
             new(3, "TeamLead 3") { Wishlist = new List<int> { 3, 1, 2 } }
         };
 
-        var hrManager = new HRManager(juniors, teamLeads);
+        var mockStrategy = new Mock<IMatchingStrategy>();
 
-        var teams = hrManager.ExecuteMatchingAlgorithm();
+        mockStrategy.Setup(m => m.ExecuteMatchingAlgorithm(juniors, teamLeads))
+            .Returns(new List<Team>
+            {
+                new(teamLeads[0], juniors[0]),
+                new(teamLeads[1], juniors[1]),
+                new(teamLeads[2], juniors[2])
+            });
+
+        var hrManager = new HRManager(juniors, teamLeads, mockStrategy.Object);
+
+        var teams = hrManager.BuildTeams();
 
         var expectedTeams = new List<(int TeamLeadId, int JuniorId)>
         {
@@ -62,5 +85,31 @@ public class HRManagerTests
             Assert.Contains(teams, team =>
                 team.TeamLead.Id == expectedTeam.TeamLeadId &&
                 team.Junior.Id == expectedTeam.JuniorId);
+    }
+
+    [Fact]
+    public void ExecuteMatchingAlgorithm_ShouldBeCalledOnce()
+    {
+        var juniors = new List<Junior>
+        {
+            new(1, "Junior 1") { Wishlist = new List<int> { 1, 2, 3 } },
+            new(2, "Junior 2") { Wishlist = new List<int> { 2, 3, 1 } },
+            new(3, "Junior 3") { Wishlist = new List<int> { 3, 1, 2 } }
+        };
+
+        var teamLeads = new List<TeamLead>
+        {
+            new(1, "TeamLead 1") { Wishlist = new List<int> { 1, 2, 3 } },
+            new(2, "TeamLead 2") { Wishlist = new List<int> { 2, 3, 1 } },
+            new(3, "TeamLead 3") { Wishlist = new List<int> { 3, 1, 2 } }
+        };
+
+        var mockStrategy = new Mock<IMatchingStrategy>();
+
+        var hrManager = new HRManager(juniors, teamLeads, mockStrategy.Object);
+
+        hrManager.BuildTeams();
+
+        mockStrategy.Verify(m => m.ExecuteMatchingAlgorithm(juniors, teamLeads), Times.Once);
     }
 }

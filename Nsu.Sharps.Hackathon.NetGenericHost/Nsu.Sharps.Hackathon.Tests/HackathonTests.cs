@@ -1,4 +1,6 @@
 using Microsoft.Extensions.Options;
+using Moq;
+using Nsu.Sharps.Hackathon.NetGenericHost.Interfaces;
 using Nsu.Sharps.Hackathon.NetGenericHost.Models;
 using Nsu.Sharps.Hackathon.NetGenericHost.Options;
 using Nsu.Sharps.Hackathon.NetGenericHost.Services;
@@ -39,7 +41,21 @@ public class HackathonTests
 
         var wishlistGenerator = new WishlistGenerator(false);
 
-        var hackathon = new NetGenericHost.Services.Hackathon(juniors, teamLeads, wishlistGenerator, hrDirector);
+        var mockStrategy = new Mock<IMatchingStrategy>();
+
+
+        mockStrategy.Setup(m => m.ExecuteMatchingAlgorithm(juniors, teamLeads))
+            .Returns(new List<Team>
+            {
+                new(teamLeads[0], juniors[0]),
+                new(teamLeads[1], juniors[1]),
+                new(teamLeads[2], juniors[2])
+            });
+
+        var hackathon =
+            new NetGenericHost.Services.Hackathon(juniors, teamLeads, wishlistGenerator, hrDirector,
+                mockStrategy.Object);
+
 
         var expectedHarmonyLevel = 3.0;
 
