@@ -19,9 +19,9 @@ public class HackathonWorker : IHostedService
     {
         var hackathon = _hackathonFactory.CreateHackathon();
         var averageHarmonyLevel = hackathon.CalculateAverageHarmonyLevel(_amountValuesOptions.AmountOfHackathons);
-
+        
         Console.WriteLine($"Average harmony level: {averageHarmonyLevel}");
-
+        
         return Task.CompletedTask;
     }
 
