@@ -26,7 +26,6 @@ public class HRDirectorTests
         Assert.Equal(value, result);
     }
 
-    //todo: signature??
     [Theory]
     [InlineData(new[] { 2, 6 }, 3)]
     [InlineData(new[] { 1, 50 }, 1.9608)]

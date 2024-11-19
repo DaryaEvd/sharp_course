@@ -4,47 +4,55 @@ namespace Nsu.Sharps.Hackathon.Tests;
 
 public class FileDataLoaderTests
 {
-    private readonly ReadCsvFile _reader;
-
-    public FileDataLoaderTests()
+    [Fact]
+    public void FileNotFoundExceptionTest()
     {
-        _reader = new ReadCsvFile();
+        var reader = new ReadCsvFile();
+
+        Assert.Throws<FileNotFoundException>(() => reader.ReadFile("Participants/FileDoesntExist.csv"));
+    }
+
+    [Theory]
+    [InlineData("Invalid,Header\n1;Participant One")]
+    [InlineData("Invalid;Header\n1;Participant One")]
+    [InlineData(";Header\n1;Participant One")]
+    [InlineData(" Header\n1;Participant One")]
+    [InlineData("\t\n1;Participant One")]
+    public void InvalidHeaderTest(string csvContent)
+    {
+        var reader = new ReadCsvFile();
+        var fileName = "junior_file.csv";
+
+        using var stringReader = new StringReader(csvContent);
+
+        Assert.Throws<InvalidDataException>(() => reader.ReadFromStream(stringReader, fileName));
     }
 
     [Fact]
-    public void WhenFileExtensionIsInvalid()
+    public void IncorrectFileName()
     {
-        var validDataContent = "Id;Name\n1;Юдин Адам\n2;Яшина Яна\n";
+        var reader = new ReadCsvFile();
+        var invalidFileName = "wrong_file_name.csv";
 
-        using var reader = new StringReader(validDataContent);
+        using var stringReader = new StringReader("Id;Name\n1;Participant One");
 
-        Assert.Throws<InvalidDataException>(() => _reader.ReadFromStream(reader, "juinior.txt"));
+        Assert.Throws<InvalidDataException>(() => reader.ReadFromStream(stringReader, invalidFileName));
     }
 
-    [Fact]
-    public void TestEmptyFile()
+    [Theory]
+    [InlineData("Id;Name\nInvalidData")]
+    [InlineData("Id;Name\nInvalid,Data")]
+    [InlineData("Id;Name\nInvalid Data")]
+    [InlineData("Id;Name\n\t\n")]
+    [InlineData("Id;Name\nNotNumber;Participant One")]
+    [InlineData("Id;Name\n;Participant One")]
+    public void InvalidDataInFileTest(string csvContent)
     {
-        var emptyFileContent = "";
-        using var reader = new StringReader(emptyFileContent);
+        var reader = new ReadCsvFile();
+        var fileName = "teamlead_file.csv";
 
-        Assert.Throws<InvalidDataException>(() => _reader.ReadFromStream(reader, "filename.csv"));
-    }
+        using var stringReader = new StringReader(csvContent);
 
-    [Fact]
-    public void TestInvalidHeader()
-    {
-        var invalidHeaderContent = "idddd,name\n1;John Doe\n";
-        using var reader = new StringReader(invalidHeaderContent);
-
-        Assert.Throws<InvalidDataException>(() => _reader.ReadFromStream(reader, "filename.csv"));
-    }
-
-    [Fact]
-    public void TestInvalidData()
-    {
-        var invalidDataContent = "Id;Name\nabc;John Doe\n";
-        using var reader = new StringReader(invalidDataContent);
-
-        Assert.Throws<InvalidDataException>(() => _reader.ReadFromStream(reader, "filename.csv"));
+        Assert.Throws<InvalidDataException>(() => reader.ReadFromStream(stringReader, fileName));
     }
 }

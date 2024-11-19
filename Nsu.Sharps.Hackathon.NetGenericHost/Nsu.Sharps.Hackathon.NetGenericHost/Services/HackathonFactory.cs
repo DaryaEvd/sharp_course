@@ -28,6 +28,9 @@ public class HackathonFactory
         var juniors = _dataLoader.LoadJuniors(_dataPathOptions.PathForJuniors);
         var teamLeads = _dataLoader.LoadTeamLeads(_dataPathOptions.PathForTeamLeads);
 
+        if (juniors.Count != teamLeads.Count)
+            throw new InvalidOperationException("Amount of juniors does not match the amount of teamLeads");
+
         return new Hackathon(juniors, teamLeads, _wishlistGenerator, _hrDirector, _matchingStrategy);
     }
 }

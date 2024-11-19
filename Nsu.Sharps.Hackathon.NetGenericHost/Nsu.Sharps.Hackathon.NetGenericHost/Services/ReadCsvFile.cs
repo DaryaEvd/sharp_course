@@ -8,7 +8,7 @@ public class ReadCsvFile : IReader
     public List<Participant> ReadFile(string pathToFile)
     {
         if (!File.Exists(pathToFile))
-            throw new FileNotFoundException($"File {pathToFile} doesn't exist.");
+            throw new FileNotFoundException($"File {pathToFile} doesn't exist");
 
         using var reader = new StreamReader(pathToFile);
         return ReadFromStream(reader, Path.GetFileName(pathToFile));
@@ -18,11 +18,15 @@ public class ReadCsvFile : IReader
     {
         var extension = Path.GetExtension(fileName);
         if (!string.Equals(extension, ".csv", StringComparison.OrdinalIgnoreCase))
-            throw new InvalidDataException($"Invalid file extension. Expected '.csv', got '{extension}'.");
+            throw new InvalidDataException($"Invalid file extension. Expected '.csv', got '{extension}'");
 
         var header = reader.ReadLine();
         if (header != "Id;Name")
-            throw new InvalidDataException("File does not have a valid header. Expected 'Id;Name'.");
+            throw new InvalidDataException("File does not have a valid header. Expected 'Id;Name'");
+
+        if (!fileName.StartsWith("junior", StringComparison.OrdinalIgnoreCase) &&
+            !fileName.StartsWith("teamlead", StringComparison.OrdinalIgnoreCase))
+            throw new InvalidDataException("File should start with 'junior' or 'teamlead'");
 
         var participants = new List<Participant>();
         string line;
@@ -36,10 +40,8 @@ public class ReadCsvFile : IReader
             var name = columns[1];
             if (fileName.StartsWith("junior", StringComparison.OrdinalIgnoreCase))
                 participants.Add(new Junior(id, name));
-            else if (fileName.StartsWith("teamlead", StringComparison.OrdinalIgnoreCase))
-                participants.Add(new TeamLead(id, name));
             else
-                throw new InvalidDataException("Invalid file type. File should start with 'junior' or 'teamlead'");
+                participants.Add(new TeamLead(id, name));
         }
 
         return participants;

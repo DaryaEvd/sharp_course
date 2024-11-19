@@ -17,11 +17,34 @@ public class HackathonWorker : IHostedService
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        var hackathon = _hackathonFactory.CreateHackathon();
-        var averageHarmonyLevel = hackathon.CalculateAverageHarmonyLevel(_amountValuesOptions.AmountOfHackathons);
-        
-        Console.WriteLine($"Average harmony level: {averageHarmonyLevel}");
-        
+        try
+        {
+            var hackathon = _hackathonFactory.CreateHackathon();
+            var averageHarmonyLevel = hackathon.CalculateAverageHarmonyLevel(_amountValuesOptions.AmountOfHackathons);
+
+            Console.WriteLine($"Average harmony level: {averageHarmonyLevel}");
+        }
+        catch (FileNotFoundException ex)
+        {
+            Console.WriteLine($"File Error: {ex.Message}");
+            return Task.FromException(ex);
+        }
+        catch (InvalidDataException ex)
+        {
+            Console.WriteLine($"Data Error: {ex.Message}");
+            return Task.FromException(ex);
+        }
+        catch (InvalidOperationException ex)
+        {
+            Console.WriteLine($"Operation Error: {ex.Message}");
+            return Task.FromException(ex);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Unexpected Error: {ex.Message}");
+            return Task.FromException(ex);
+        }
+
         return Task.CompletedTask;
     }
 
