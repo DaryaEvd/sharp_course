@@ -55,4 +55,31 @@ public class FileDataLoaderTests
 
         Assert.Throws<InvalidDataException>(() => reader.ReadFromStream(stringReader, fileName));
     }
+    
+    [Fact]
+    public void  DuplicateIdsFoundTest()
+    { 
+        var csvContent = "Id;Name\n11;Name11\n11;Name12";
+        using var reader = new StringReader(csvContent);
+        var readCsvFile = new ReadCsvFile();
+ 
+        var exception = Assert.Throws<InvalidDataException>(() =>
+            readCsvFile.ReadFromStream(reader, "junior.csv"));
+
+        Assert.Equal("Duplicate Id found: 11 in line: 11;Name12", exception.Message);
+    }
+
+    [Fact]
+    public void  DuplicateNamesWithUniqueIdsTest()
+    { 
+        var csvContent = "Id;Name\n11;NameName\n12;NameName";  
+        using var reader = new StringReader(csvContent);
+        var readCsvFile = new ReadCsvFile();
+ 
+        var participants = readCsvFile.ReadFromStream(reader, "junior.csv");
+ 
+        Assert.Equal(2, participants.Count);
+        Assert.Contains(participants, p => p.Id == 11 && p.Name == "NameName");
+        Assert.Contains(participants, p => p.Id == 12 && p.Name == "NameName");
+    }
 }

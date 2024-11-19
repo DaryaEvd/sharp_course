@@ -29,6 +29,8 @@ public class ReadCsvFile : IReader
             throw new InvalidDataException("File should start with 'junior' or 'teamlead'");
 
         var participants = new List<Participant>();
+        var uniqueIds = new HashSet<int>();
+
         string line;
         while ((line = reader.ReadLine()) != null)
         {
@@ -36,6 +38,9 @@ public class ReadCsvFile : IReader
 
             if (columns.Length != 2 || !int.TryParse(columns[0], out var id))
                 throw new InvalidDataException($"Invalid data format in line: {line}");
+            
+            if (!uniqueIds.Add(id))
+                throw new InvalidDataException($"Duplicate Id found: {id} in line: {line}");
 
             var name = columns[1];
             if (fileName.StartsWith("junior", StringComparison.OrdinalIgnoreCase))
