@@ -5,17 +5,23 @@ namespace Nsu.Sharps.Hackathon.NetGenericHost.Services;
 public class WishlistGenerator
 {
     private readonly Random _rand;
+    private readonly bool _useRandom;
 
-    public WishlistGenerator()
+
+    public WishlistGenerator(bool useRandom = true)
     {
         _rand = new Random();
+        _useRandom = useRandom;
     }
 
     public void GenerateWishlists(List<Junior> juniors, List<TeamLead> teamLeads)
     {
-        foreach (var junior in juniors) junior.Wishlist = GetShuffledIds(teamLeads.Select(tl => tl.Id).ToList());
+        if (_useRandom)
+        {
+            foreach (var junior in juniors) junior.Wishlist = GetShuffledIds(teamLeads.Select(tl => tl.Id).ToList());
 
-        foreach (var teamLead in teamLeads) teamLead.Wishlist = GetShuffledIds(juniors.Select(j => j.Id).ToList());
+            foreach (var teamLead in teamLeads) teamLead.Wishlist = GetShuffledIds(juniors.Select(j => j.Id).ToList());
+        }
     }
 
     private List<int> GetShuffledIds(List<int> ids)

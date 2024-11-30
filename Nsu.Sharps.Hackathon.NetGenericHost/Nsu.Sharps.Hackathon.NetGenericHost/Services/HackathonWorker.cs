@@ -1,7 +1,5 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Nsu.Sharps.Hackathon.NetGenericHost.Interfaces;
-using Nsu.Sharps.Hackathon.NetGenericHost.Models;
 using Nsu.Sharps.Hackathon.NetGenericHost.Options;
 
 namespace Nsu.Sharps.Hackathon.NetGenericHost.Services;
@@ -9,43 +7,43 @@ namespace Nsu.Sharps.Hackathon.NetGenericHost.Services;
 public class HackathonWorker : IHostedService
 {
     private readonly AmountValuesOptions _amountValuesOptions;
-    private readonly DataPathOptions _dataPathOptions;
+    private readonly HackathonFactory _hackathonFactory;
 
-    private readonly HRDirector _hrDirector;
-    private readonly IReader _reader;
-    private readonly WishlistGenerator _wishlistGenerator;
-
-    public HackathonWorker(IReader reader, WishlistGenerator wishlistGenerator, HRDirector hrDirector,
-        IOptions<DataPathOptions> dataPathOptions,
-        IOptions<AmountValuesOptions> amountValuesOptions)
+    public HackathonWorker(HackathonFactory hackathonFactory, IOptions<AmountValuesOptions> amountValuesOptions)
     {
-        _reader = reader;
-        _wishlistGenerator = wishlistGenerator;
-        _hrDirector = hrDirector;
-        _dataPathOptions = dataPathOptions.Value;
+        _hackathonFactory = hackathonFactory;
         _amountValuesOptions = amountValuesOptions.Value;
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        var juniors = _reader.ReadFile(_dataPathOptions.PathForJuniors).OfType<Junior>().ToList();
-        var teamLeads = _reader.ReadFile(_dataPathOptions.PathForTeamLeads).OfType<TeamLead>().ToList();
-
-        var hackathon = new Hackathon(juniors, teamLeads, _wishlistGenerator, _hrDirector);
-
-        double totalHarmonyLevel = 0;
-        var numberOfHackathons = _amountValuesOptions.AmountOfHackathons;
-
-        for (var i = 1; i <= numberOfHackathons; i++)
+        try
         {
-            var harmonyLevel = hackathon.RunOneHackathon();
-            totalHarmonyLevel += harmonyLevel;
+            var hackathon = _hackathonFactory.CreateHackathon();
+            var averageHarmonyLevel = hackathon.CalculateAverageHarmonyLevel(_amountValuesOptions.AmountOfHackathons);
 
-            Console.WriteLine($"Harmony level for hackathon #{i}: {harmonyLevel}");
+            Console.WriteLine($"Average harmony level: {averageHarmonyLevel}");
         }
-
-        var averageHarmonyLevel = totalHarmonyLevel / numberOfHackathons;
-        Console.WriteLine($"Average harmony level: {averageHarmonyLevel}");
+        catch (FileNotFoundException ex)
+        {
+            Console.WriteLine($"File Error: {ex.Message}");
+            return Task.FromException(ex);
+        }
+        catch (InvalidDataException ex)
+        {
+            Console.WriteLine($"Data Error: {ex.Message}");
+            return Task.FromException(ex);
+        }
+        catch (InvalidOperationException ex)
+        {
+            Console.WriteLine($"Operation Error: {ex.Message}");
+            return Task.FromException(ex);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Unexpected Error: {ex.Message}");
+            return Task.FromException(ex);
+        }
 
         return Task.CompletedTask;
     }

@@ -17,22 +17,18 @@ public class HarmonyCalculator
         _amountValuesOptions = amountValuesOptions.Value;
     }
 
-    public int CalculateHarmonyLevel(Participant participant, int targetId, bool isJunior)
+    public int CalculateHarmonyLevel(Participant participant, int targetId)
     {
-        var totalParticipants =
-            isJunior ? _amountValuesOptions.AmountOfJuniors : _amountValuesOptions.AmountOfTeamLeads;
-        var index = participant.Wishlist.IndexOf(targetId);
-        if (index < 0)
-            throw new InvalidOperationException(
-                $"{targetId} is not in the wishlist of {participant.Name} (Id: {participant.Id})");
-
-        return totalParticipants - index;
+        var totalParticipants = _amountValuesOptions.AmountOfParticipantsFromOneSide;
+        return participant.CalculateHarmonyLevelByParticipant(targetId, totalParticipants);
     }
 
-    public double CalculateHarmonicMean(int juniorHarmonyLevel, int teamLeadHarmonyLevel)
+    public double CalculateHarmonicMean(List<int> values)
     {
-        return _calculationDataOptions.AmountOfParticipantsInNumerator /
-               (_calculationDataOptions.NumeratorInCountingHarmony / juniorHarmonyLevel +
-                _calculationDataOptions.NumeratorInCountingHarmony / teamLeadHarmonyLevel);
+        if (values == null || values.Count == 0)
+            throw new ArgumentException("List of values cannot be null or empty.");
+
+        var denominator = values.Sum(value => 1.0 / value);
+        return _calculationDataOptions.AmountOfParticipantsInNumerator / denominator;
     }
 }

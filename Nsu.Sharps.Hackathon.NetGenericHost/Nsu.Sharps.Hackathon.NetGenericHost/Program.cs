@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Nsu.Sharps.Hackathon.NetGenericHost.Interfaces;
 using Nsu.Sharps.Hackathon.NetGenericHost.Options;
+using Nsu.Sharps.Hackathon.NetGenericHost.OptionsValidation;
 using Nsu.Sharps.Hackathon.NetGenericHost.Services;
 
 public class Program
@@ -20,11 +22,18 @@ public class Program
                 services.Configure<AmountValuesOptions>(hostContext.Configuration.GetSection("AmountValues"));
                 services.Configure<CalculationDataOptions>(hostContext.Configuration.GetSection("CalculationData"));
 
+                services.AddSingleton<IValidateOptions<DataPathOptions>, DataPathOptionsValidation>();
+                services.AddSingleton<IValidateOptions<AmountValuesOptions>, AmountValuesOptionsValidation>();
+                services.AddSingleton<IValidateOptions<CalculationDataOptions>, CalculationDataOptionsValidation>();
+
                 services.AddHostedService<HackathonWorker>();
+                services.AddTransient<IDataLoader, FileDataLoader>();
                 services.AddTransient<IReader, ReadCsvFile>();
                 services.AddTransient<WishlistGenerator>();
+                services.AddTransient<HackathonFactory>();
                 services.AddTransient<Hackathon>();
                 services.AddTransient<HarmonyCalculator>();
+                services.AddTransient<IMatchingStrategy, DefaultMatchingStrategy>();
                 services.AddTransient<HRDirector>();
                 services.AddTransient<HRManager>();
             })

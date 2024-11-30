@@ -12,4 +12,14 @@ public abstract class Participant
     public int Id { get; }
     public string Name { get; }
     public List<int> Wishlist { get; set; }
+
+    public int CalculateHarmonyLevelByParticipant(int preferredId, int totalParticipantsInTeam)
+    {
+        var preferenceRank = Wishlist.IndexOf(preferredId);
+        if (preferenceRank < 0)
+            throw new InvalidOperationException(
+                $"{preferredId} is not in the wishlist of {Name} (Id: {Id})");
+
+        return totalParticipantsInTeam - preferenceRank;
+    }
 }
